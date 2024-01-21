@@ -1,0 +1,85 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100vh;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.app {
+  padding: 1rem 3rem;
+  margin: 2rem;
+  height: fit-content;
+  width: fit-content;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.success {
+  font-size: 23px;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #d0d0d0;
+  font-weight: 500;
+  color: rgb(20, 132, 20);
+  border: 3px solid green;
+}
+.error {
+  font-size: 23px;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #d0d0d0;
+  font-weight: 500;
+  color: rgb(237, 52, 52);
+  border: 3px solid red;
+}
+.btn {
+  border-radius: 5px;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  color: #fff;
+  font-weight: 600;
+  border: 3px solid #999;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+.add {
+  background-color: rgb(87, 132, 87);
+}
+.add:hover {
+  background-color: rgb(114, 165, 114);
+}
+.delete {
+  background-color: rgb(227, 94, 94);
+}
+.delete:hover {
+  background-color: rgb(226, 110, 110);
+}
+
+.form div,
+.filterdiv {
+  align-items: center;
+  padding: 0;
+  clear: both;
+  margin: 1.5rem 0;
+}
+
+.form div input,
+.filterdiv input {
+  border-radius: 2px;
+  border: 2px solid #999898;
+  padding: 5px;
+  margin-right: 3px;
+  float: right;
+}
+
+.list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
