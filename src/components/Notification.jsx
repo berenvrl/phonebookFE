@@ -2,13 +2,9 @@ const Notification = ({ message, error }) => {
   if (message === null) {
     return null;
   }
-  const divclassName = error ? "error" : "success";
+  const divclassName = error ? " notific error" : "notific success";
 
-  return (
-    <div className={divclassName} style={{ position: "absolute", top: "90px" }}>
-      {message}
-    </div>
-  );
+  return <div className={divclassName}>{message}</div>;
 };
 
 export default Notification;

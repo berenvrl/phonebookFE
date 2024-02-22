@@ -1,24 +1,13 @@
-import Person from "./Person";
+import FilteredPersons from "./FilteredPersons";
+import PersonList from "./PersonList";
 
 const Persons = ({ search, filteredItems, persons, handleDeletePerson }) => {
   return (
-    <div className="list">
+    <div>
       {search ? (
-        <ul>
-          {filteredItems.map((person) => (
-            <Person person={person} key={person.id} />
-          ))}
-        </ul>
+        <FilteredPersons filteredItems={filteredItems} />
       ) : (
-        <ul>
-          {persons.map((person) => (
-            <Person
-              person={person}
-              key={person.id}
-              handleDeletePerson={handleDeletePerson}
-            />
-          ))}
-        </ul>
+        <PersonList persons={persons} handleDeletePerson={handleDeletePerson} />
       )}
     </div>
   );
