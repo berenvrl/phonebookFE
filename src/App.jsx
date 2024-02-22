@@ -1,42 +1,142 @@
 import { useState, useEffect } from "react";
 import personsService from "./services/personsService";
-import Filter from "./components/Filter";
-import PersonForm from "./components/PersonForm";
-import Persons from "./components/Persons";
 import Notification from "./components/Notification";
+import PersonsForm from "./components/PersonsForm";
+import RegisterForm from "./components/RegisterForm";
+import loginService from "./services/login";
+import registerService from "./services/register";
+import TotalLoginArea from "./components/TotalLoginArea";
+import LogoDiv from "./components/LogoDiv";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
   const [search, setSearch] = useState("");
   const [notificationMessage, setNotificationMessage] = useState("");
   const [error, setError] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
+  const [clickedRegister, setClickRegister] = useState(false);
+  //user authentication
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [name, setName] = useState("");
+  const [newUser, setNewUser] = useState(null);
 
+  //Functions
+  const clearInputField = () => {
+    setUsername("");
+    setPassword("");
+  };
+
+  const handleToggle = () => {
+    setVisible((visible) => !visible);
+  };
+  const handleRegister = () => {
+    setClickRegister(true);
+    clearInputField();
+  };
   //clear input field after events
   const handleClearInput = () => {
     setNewName("");
     setNewNumber("");
   };
 
-  //getting all data from db
-  const getpersons = () => {
-    personsService
-      .getAll()
-      .then((initialPersons) => {
-        setPersons(initialPersons);
-      })
-      .catch((err) => {
-        shownotification("Fail getting contact numbers!", true);
-        console.error(err);
-      });
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    try {
+      const user = await loginService.login({ username, password });
+
+      //to save user info to local storage for making info saved when browser is refreshed
+      window.localStorage.setItem("loggedPersonAppUser", JSON.stringify(user));
+
+      personsService.setToken(user.token);
+
+      setUser(user);
+      clearInputField();
+
+      const initialPersons = await personsService.getAll();
+      window.localStorage.setItem(
+        "loggedInitialPersons",
+        JSON.stringify(initialPersons)
+      );
+      setPersons(initialPersons);
+    } catch {
+      shownotification("Username and password should be correct", true);
+      dontshownotification();
+    }
+  };
+  const handleLogOut = async () => {
+    setUser(null);
+    clearInputField();
+    window.localStorage.removeItem("loggedPersonAppUser");
   };
 
-  useEffect(getpersons, []);
+  const handleUserCreation = async (event) => {
+    event.preventDefault();
+    try {
+      const newUser = await registerService.setusers({
+        username,
+        name,
+        password,
+      });
 
+      if (username && name && password) {
+        setNewUser(newUser);
+        clearInputField();
+        setName("");
+        shownotification(`${newUser.name} registered!`);
+        setClickRegister(false);
+      }
+    } catch (error) {
+      const errorMessage = error.response.data.error;
+      shownotification(`${errorMessage}`, true);
+      dontshownotification();
+      setName("");
+      clearInputField();
+    }
+  };
+
+  const makeUserNameNice = (word) => {
+    let words = word.split(" ");
+    let result = words.map(
+      (word) => word.charAt(0).toUpperCase() + word.slice(1)
+    );
+
+    return result.join(" ");
+  };
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedPersonAppUser");
+
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      personsService.setToken(user.token);
+      getpersons();
+    }
+  }, []);
+
+  //Functions for database arrangements
+
+  //getting all data from db
+  const getpersons = async () => {
+    try {
+      const initialPersons = await personsService.getAll();
+      window.localStorage.setItem(
+        "loggedInitialPersons",
+        JSON.stringify(initialPersons)
+      );
+      setPersons(initialPersons);
+    } catch (err) {
+      shownotification("Fail getting contact numbers!", true);
+      console.error(err);
+    }
+  };
   //adding a contact to a db
-  const handleAddBtn = (e) => {
+  const handleAddBtn = async (e) => {
     e.preventDefault();
 
     const newaddedName = {
@@ -72,77 +172,81 @@ const App = () => {
       handleClearInput();
     } else {
       //create a new contact
+      try {
+        const returnedperson = await personsService.create(newaddedName);
 
-      if (newName && newNumber) {
-        personsService
-          .create(newaddedName)
-          .then((returnedperson) => {
-            setPersons([...persons, returnedperson]);
-            handleClearInput();
-            shownotification(`${newName} added!`, false);
-          })
-          .catch((err) => {
-            shownotification("Addition fail!", true);
-          });
-      } else {
-        alert("Fill name and number input!");
+        setPersons([...persons, returnedperson]);
+        handleClearInput();
+        shownotification(`${newName} added!`, false);
+      } catch (err) {
+        console.log(err.message);
+        shownotification(`${err.response.data.error}`, true);
+        handleClearInput();
       }
+
+      setVisible((visible) => !visible);
     }
   };
-
   //deleting a contact from db
-  const handleDeletePerson = (person) => {
-    const confirmdelete = window.confirm(
-      `Are you sure want to delete ${person.name} ?`
-    );
+  const handleDeletePerson = async (person) => {
+    const loggedUserJSON = window.localStorage.getItem("loggedPersonAppUser");
 
-    if (confirmdelete) {
-      const url = `${personsService.baseUrl}/${person.id}`;
+    if (loggedUserJSON) {
+      const loggedUser = JSON.parse(loggedUserJSON);
+      personsService.setToken(loggedUser.token);
 
-      personsService
-        .deletePerson(url)
-        .then((returneddata) => {
+      const confirmdelete = window.confirm(
+        `Are you sure want to delete ${person.name} ?`
+      );
+      if (confirmdelete) {
+        const url = `${personsService.baseUrl}/${person.id}`;
+
+        try {
+          await personsService.deletePerson(url);
+
           setPersons(
             persons.filter((item) => {
               return item.id !== person.id;
             })
           );
           shownotification(`${person.name} deleted!`, false);
-        })
-        .catch((err) => {
+        } catch (err) {
+          console.log(err);
           shownotification(
             `${person.name} was already deleted from the server!`,
             true
           );
           setPersons(persons.filter((obj) => obj.id !== person.id));
-        });
+        }
+      }
+    }
+  };
+  //update contact number in db
+  const updatenumber = async (id, newObj) => {
+    const loggedUserJSON = window.localStorage.getItem("loggedPersonAppUser");
+
+    if (loggedUserJSON) {
+      const loggedUser = JSON.parse(loggedUserJSON);
+      personsService.setToken(loggedUser.token);
+
+      try {
+        await personsService.update(id, newObj);
+        setPersons(
+          persons.map((person) =>
+            person.id === id ? { ...person, number: newObj.number } : person
+          )
+        );
+
+        handleClearInput();
+        shownotification(`${newObj.name} contact updated!`, false);
+      } catch (err) {
+        console.log(err);
+        shownotification("Update fail!", true);
+      }
     }
   };
 
-  //update contact number
-  //***currently doesnt work because its not handled in backend */
-  const updatenumber = (id, newObj) => {
-    if (newObj.number) {
-      personsService
-        .update(id, newObj)
-        .then((returneddata) => {
-          setPersons(
-            persons.map((person) =>
-              person.id === id ? { ...person, number: newObj.number } : person
-            )
-          );
-          handleClearInput();
-          shownotification(`${newObj.name} contact updated!`, false);
-        })
-        .catch((err) => {
-          shownotification("Update fail!", true);
-        });
-    } else {
-      alert("Please fill number!");
-    }
-  };
-
-  //filter contact by typing
+  //filter persons by typing
   useEffect(() => {
     const handleSearchFilter = (e) => {
       const listtofilter = persons.filter((person) =>
@@ -161,13 +265,13 @@ const App = () => {
     handleSearchFilter();
   }, [search]);
 
-  //for displaying notifications 3 sec
+  //for displaying notifications 4 sec
   const dontshownotification = () => {
     setTimeout(() => {
       setNotificationMessage(
         (notificationMessage) => (notificationMessage = null)
       );
-    }, 3000);
+    }, 4000);
   };
 
   //content, color and duration of a notification
@@ -177,28 +281,71 @@ const App = () => {
     dontshownotification();
   };
 
+  const appClassName = !user ? "app" : "app2";
+  const logodiv = !user ? "logodiv" : "logodiv2";
+
   return (
-    <div className="app">
-      <h2 style={{ marginBottom: "70px" }}>Phonebook</h2>
-      {notificationMessage && (
-        <Notification message={notificationMessage} error={error} />
-      )}
-      <Filter search={search} setSearch={setSearch} />
-      <h3 style={{ padding: "10px 0" }}>Add a new</h3>
-      <PersonForm
-        newName={newName}
-        setNewName={setNewName}
-        newNumber={newNumber}
-        setNewNumber={setNewNumber}
-        handleAddBtn={handleAddBtn}
+    <div className={appClassName}>
+      <LogoDiv
+        user={user}
+        logodiv={logodiv}
+        makeUserNameNice={makeUserNameNice}
       />
-      <h3 style={{ padding: "20px 0" }}>Numbers</h3>
-      <Persons
-        search={search}
-        filteredItems={filteredItems}
-        persons={persons}
-        handleDeletePerson={handleDeletePerson}
-      />
+      <div className="rightside">
+        <h2>
+          {!user
+            ? `${
+                clickedRegister
+                  ? "Register to Application"
+                  : "Login to Application"
+              }`
+            : "Phonebook"}
+        </h2>
+        {notificationMessage && (
+          <Notification message={notificationMessage} error={error} />
+        )}
+        {!user ? (
+          <>
+            {!clickedRegister ? (
+              <TotalLoginArea
+                handleLogin={handleLogin}
+                username={username}
+                setUsername={setUsername}
+                password={password}
+                setPassword={setPassword}
+                handleRegister={handleRegister}
+              />
+            ) : (
+              <RegisterForm
+                handleUserCreation={handleUserCreation}
+                name={name}
+                setName={setName}
+                password={password}
+                setPassword={setPassword}
+                username={username}
+                setUsername={setUsername}
+                setClickRegister={setClickRegister}
+              />
+            )}
+          </>
+        ) : (
+          <PersonsForm
+            search={search}
+            setSearch={setSearch}
+            filteredItems={filteredItems}
+            persons={persons}
+            handleDeletePerson={handleDeletePerson}
+            handleAddBtn={handleAddBtn}
+            newName={newName}
+            newNumber={newNumber}
+            setNewName={setNewName}
+            setNewNumber={setNewNumber}
+            visible={visible}
+            handleToggle={handleToggle}
+            handleLogOut={handleLogOut}
+          />
+        )}
+      </div>
     </div>
   );
 };

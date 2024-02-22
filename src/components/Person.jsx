@@ -1,12 +1,17 @@
+import Button from "./Button";
+
 function Person({ person, handleDeletePerson }) {
   return (
     <li>
-      <span>
+      <span id="addedperson">
         {person.name} {person.number}
       </span>
-      <button className="btn delete" onClick={() => handleDeletePerson(person)}>
-        delete
-      </button>
+      <Button
+        className="btn delete"
+        onClick={() => handleDeletePerson(person)}
+        src="delete.svg"
+        text="Delete"
+      />
     </li>
   );
 }

@@ -1,29 +1,51 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3001/api/persons";
+const baseUrl = "/api/persons";
+
+//authorization
+let token = null;
+
+const setToken = (newToken) => {
+  token = `Bearer ${newToken}`;
+};
 
 //getting all persons data
-const getAll = () => {
-  const result = axios.get(baseUrl);
-  return result.then((response) => response.data);
+const getAll = async () => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.get(baseUrl, config);
+  return response.data;
 };
 
-//adding a new person to persons data
-const create = (newaddedName) => {
-  const result = axios.post(baseUrl, newaddedName);
-  return result.then((response) => response.data);
+//post with authorization
+const create = async (newObject) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.post(baseUrl, newObject, config);
+
+  return response.data;
 };
 
-//update a number of a person
-//***currently doesnt work because its not handled in backend */
-const update = (id, newObject) => {
-  const result = axios.put(`${baseUrl}/${id}`, newObject);
-  return result.then((response) => response.data);
+//update a number of a person with authorization
+const update = async (id, newObject) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const result = await axios.put(`${baseUrl}/${id}`, newObject, config);
+
+  return result.data;
 };
 
-//deleting a person from persons data
-const deletePerson = (url) => {
-  const result = axios.delete(url);
-  return result.then((response) => response.data);
+//deleting a person with authorization
+const deletePerson = async (url) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  if (config.headers.Authorization) {
+    const result = await axios.delete(url, config);
+    return result.data;
+  }
 };
 
 export default {
@@ -32,4 +54,5 @@ export default {
   update,
   deletePerson,
   baseUrl,
+  setToken,
 };
