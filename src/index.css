@@ -1,29 +1,70 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Satisfy&display=swap");
 
+:root {
+  --color-primary: #f9f5f3;
+  --color-secondary: #f3f3f3;
+  --color-main-white: #fff;
+  --color-tertiary: #f48982;
+  --color-background1: #f7d173;
+  --color-background2: #f9736a;
+  --color-writing: #615551;
+  --color-h2: #275665;
+  --color-bodycolor: #0b0b0b;
+  --color-bg1: #fbdb89;
+  --color-bg2: #f48982;
+  --color-bg3: #f8a7a1;
+  --color-bg4: linear-gradient(to right bottom, #8f7e79, #f8a7a1);
+
+  --color-btn: #f38e82;
+  --color-btn2: #214956;
+  --color-notification-bg: #d0d0d0;
+  --color-success: #148414;
+  --color-error: #ed3434;
+  --color-btn3: #8f7e79;
+  --color-btn4: #9f8c86;
+  --color-btn5: #f4736a;
+  --color-btn6: #f67b7b;
+  --color-placeholder: #999898;
+  --color-background: #dbd9d9;
+  --flex-direction: column;
+  --transition: all 0.3s ease-in-out;
+}
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   font-family: "Manrope", sans-serif;
 }
-html,
-body {
+html {
+  /* height: auto; */
   height: 100%;
-  background-color: #f9f5f3;
 }
 
 body {
-  color: #0b0b0b;
+  color: var(--color-bodycolor);
   width: 100%;
-  margin: 20rem;
-  background-color: #f3f3f3;
-  /* overflow: hidden; */
-  margin: 0;
+  height: 100%;
   display: flex;
+  background-color: var(--color-primary);
   justify-content: center;
   align-items: center;
   position: relative;
+}
+
+.rightside,
+.loginform,
+.loginform div,
+.totalLoginArea,
+.add,
+.delete,
+.filterdiv,
+.filtercontact,
+.form,
+.personsdiv,
+.list li {
+  align-items: center;
 }
 
 .app {
@@ -32,18 +73,23 @@ body {
   gap: 1rem;
   grid-template-columns: 1.5fr 1fr;
   width: 75vw;
-  border: 5px solid #f48982;
+  border: 5px solid var(--color-tertiary);
   border-radius: 1rem;
   z-index: 1;
-  background-color: #f3f3f3;
+  background-color: var(--color-secondary);
   min-height: 75vh;
   box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.2);
   position: relative;
 }
+
 .app::before {
   content: "";
   position: absolute;
-  background-image: linear-gradient(to right bottom, #f7d173, #f9736a);
+  background-image: linear-gradient(
+    to right bottom,
+    var(--color-background1),
+    var(--color-background2)
+  );
   border-radius: 1rem;
   top: -10px;
   left: -10px;
@@ -56,7 +102,7 @@ body {
 
 .app::after {
   content: "";
-  background-color: #f3f3f3;
+  background-color: var(--color-secondary);
   position: absolute;
   border-radius: 1rem;
   top: 0;
@@ -70,80 +116,59 @@ body {
 .logodiv-writing {
   font-family: "Satisfy", cursive;
   font-weight: 400;
-  font-size: 1.3rem;
+  font-size: 1.7rem;
   letter-spacing: 0.3px;
-  color: #615551;
-  position: absolute;
-  top: -10%;
+  color: var(--color-writing);
 }
 
 .app2 {
-  padding: 1rem 3rem 3rem 3rem;
-  display: grid;
-  grid-template-columns: 1fr;
+  padding: 2rem 3rem 3rem 3rem;
   width: 100%;
-  height: 100%;
-  background-color: #f9f5f3;
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: 1fr 5fr;
+
   position: absolute;
   top: 0;
-  bottom: 0;
-  left: 0;
   right: 0;
-}
-
-.logodiv2 {
-  gap: 2rem;
-  width: 80%;
-  z-index: 1;
-}
-
-.logodiv2 .logodiv-writing {
-  font-size: 2rem;
-  font-family: "Satisfy", cursive;
-  font-weight: 400;
-  letter-spacing: 0.3px;
-  color: #615551;
-  position: relative;
-  top: 10%;
-}
-
-.logodiv2 .loggedin {
-  color: #615551;
-  position: absolute;
-  top: 20%;
+  left: 0;
+  bottom: 0;
 }
 
 .rightside {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: var(--flex-direction);
   height: 100%;
   justify-content: center;
 }
 
 .rightside h2 {
-  color: #0b0b0b;
-  color: #275665;
+  color: var(--color-bodycolor);
+  color: var(--color-h2);
   align-self: center;
   justify-self: center;
 }
+
 .loggedin {
-  color: #f9f5f3;
+  color: var(--color-primary);
+  color: var(--color-bg3);
   z-index: 1;
-  position: absolute;
-  bottom: 3%;
-  left: 2%;
+  font-size: 0.9rem;
 }
 
 .logodiv {
-  align-items: center;
   background-image: url("phone.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
   border-radius: 1rem;
-  height: 100%;
+  height: 90%;
+  align-self: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.2rem;
 }
+
 .logodiv:before {
   content: "";
   position: absolute;
@@ -153,14 +178,17 @@ body {
   border-radius: 1rem;
   top: 0;
   left: 0;
-  background-image: linear-gradient(to right bottom, #fbdb89, #f48982);
+  background-image: linear-gradient(
+    to right bottom,
+    var(--color-bg1),
+    var(--color-bg2)
+  );
   opacity: 0.4;
 }
 
 .loginform {
-  flex-direction: column;
+  flex-direction: var(--flex-direction);
   display: flex;
-  align-items: center;
   padding: 1rem;
   gap: 0.5rem;
   width: 73%;
@@ -178,7 +206,6 @@ body {
 
 .loginform div {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   width: 100%;
   gap: 0.3rem;
@@ -201,7 +228,7 @@ body {
 }
 
 .mainpage h3 {
-  color: #615551;
+  color: var(--color-writing);
 }
 .btn {
   border-radius: 2px;
@@ -209,34 +236,39 @@ body {
   padding: 0.5rem 0.7rem;
   font-weight: 600;
   cursor: pointer;
-  color: #fff;
+  color: var(--color-main-white);
 }
 .loginform button {
-  background-color: #f38e82;
+  background-color: var(--color-btn);
   border-radius: 2px;
-  border: 2px solid #f38e82;
+  border: 2px solid var(--color-btn);
   margin-top: 1.5rem;
 }
+
 .loginform button:hover {
-  background-color: #fff;
-  transition: all 0.3s ease-in-out;
-  border: 2px solid #f38e82;
-  color: #f38e82;
+  background-color: var(--color-main-white);
+  transition: var(--transition);
+  border: 2px solid var(--color-btn);
+  color: var(--color-btn);
 }
 .registerbtn {
-  background-color: #f3f3f3;
-  border: 2px solid #214956;
-  color: #214956;
+  background-color: var(--color-secondary);
+  border: 2px solid var(--color-btn2);
+  color: var(--color-btn2);
 }
 .registerbtn:hover {
-  background-color: #214956;
-  transition: all 0.3s ease-in-out;
-  border: #214956;
-  color: #fff;
+  background-color: var(--color-btn2);
+  transition: var(--transition);
+  border: var(--color-btn2);
+  color: var(--color-main-white);
 }
 
 .createnew {
-  background-image: linear-gradient(to right bottom, #fbdb89, #f48982);
+  background-image: linear-gradient(
+    to right bottom,
+    var(--color-background1),
+    var(--color-bg2)
+  );
   font-size: 0.9rem;
   font-weight: 600;
   margin-top: 1.6rem;
@@ -245,21 +277,21 @@ body {
 .createnew:hover {
   transform: skewY(-2deg) skewX(-3deg);
   padding: 0.7rem;
+  transition: var(--transition);
 }
 
 .totalLoginArea {
   height: 100%;
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: var(--flex-direction);
   justify-content: center;
-  align-items: center;
 }
 
 .registerarea {
   margin-top: 2rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: var(--flex-direction);
   gap: 0.7rem;
   align-items: center;
 }
@@ -271,22 +303,22 @@ body {
   border: none;
   font-weight: 600;
   font-size: 1rem;
-  color: #615551;
+  color: var(--color-writing);
   position: absolute;
   top: 5%;
   right: 5%;
 }
 
 .logout:hover {
-  outline: 2px solid #615551;
-  transition: all 0.3s ease-in-out;
+  outline: 2px solid var(--color-writing);
+  transition: var(--transition);
 }
 
 .notific {
   font-size: 1.2rem;
   border-radius: 5px;
   padding: 10px;
-  background-color: #d0d0d0;
+  background-color: var(--color-notification-bg);
   font-weight: 500;
   text-align: center;
   width: 100%;
@@ -294,58 +326,56 @@ body {
 }
 
 .success {
-  color: rgb(20, 132, 20);
-  border: 3px solid green;
+  color: var(--color-success);
+  border: 3px solid var(--color-success);
 }
 .error {
-  color: rgb(237, 52, 52);
-  border: 3px solid red;
+  color: var(--color-error);
+  border: 3px solid var(--color-error);
 }
 .add {
-  background-color: #8f7e79;
-  color: #fff;
+  background-color: var(--color-btn3);
+  color: var(--color-main-white);
   margin-top: 1rem;
   border: none;
   border-radius: 1rem;
   display: inline-flex;
   justify-content: center;
-  align-items: center;
   padding: 0.3rem;
 }
 .add:hover {
-  background-color: #9f8c86;
+  background-color: var(--color-btn4);
+  transition: var(--transition);
 }
 .delete {
-  background-color: #f4736a;
-  color: #fff;
+  background-color: var(--color-btn5);
+  color: var(--color-main-white);
   border: none;
   border-radius: 1rem;
   display: inline-flex;
   justify-content: center;
-  align-items: center;
 }
 .delete:hover {
-  background-color: #f67b7b;
-  color: #fff;
+  background-color: var(--color-btn6);
+  color: varvar(--color-main-white);
+  transition: var(--transition);
 }
 
 .filterdiv {
   display: flex;
-  flex-direction: column;
+  flex-direction: var(--flex-direction);
   gap: 0.5rem;
   margin: 1rem 0;
   justify-content: center;
-  align-items: center;
-  background-color: #fff;
+  background-color: var(--color-main-white);
   border-radius: 2.5rem;
   padding: 3rem 4rem;
   width: 40%;
 }
 .filtercontact {
   display: flex;
-  flex-direction: column;
+  flex-direction: var(--flex-direction);
   gap: 1.2rem;
-  align-items: center;
 }
 
 .filterdiv input,
@@ -353,24 +383,27 @@ body {
   border-radius: 1rem;
   border: none;
   padding: 0.6rem;
-  background-color: #dbd9d9;
-  color: #615551;
+  background-color: var(--color-background);
+  color: var(--color-writing);
   font-weight: 400;
   outline: none;
 }
 
 .filterdiv input::placeholder,
 .formdiv input::placeholder {
-  color: #999898;
+  color: var(--color-placeholder);
 }
 
 .form {
   display: flex;
-  flex-direction: column;
+  flex-direction: var(--flex-direction);
   gap: 0.5rem;
   justify-content: center;
-  align-items: center;
-  background-image: linear-gradient(to right bottom, #fbdb89, #f8a7a1);
+  background-image: linear-gradient(
+    to right bottom,
+    var(--color-bg1),
+    var(--color-bg3)
+  );
   padding: 3rem;
   border-radius: 2.5rem;
   margin: 1rem 0;
@@ -380,58 +413,69 @@ body {
 
 .list {
   display: flex;
-  flex-direction: column;
+  flex-direction: var(--flex-direction);
   gap: 0.5rem;
   list-style: none;
   padding: 0;
 }
 .personsdiv {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: var(--flex-direction);
 }
 .list li {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   gap: 1rem;
 }
 
-@media (min-width: 1200px) {
-  /* .logodiv {
+@media (min-width: 992px) {
+  .logodiv {
     background-position: center;
+    height: 85%;
+    padding: 0.5rem;
+  }
+
+  .rightside {
     height: 70%;
     align-self: center;
   }
-  .rightside h2 {
-    font-size: 1.3rem;
-  }
-  .app {
-    grid-template-columns: 1.5fr 2fr;
-  }
-  .createnew,
-  .delete {
-    font-size: 0.7rem;
-    padding: 0.2rem;
-  } */
 }
 
 @media (min-width: 768px) and (max-width: 992px) {
   .logodiv {
     background-position: center;
+    height: 85%;
+    padding: 0.5rem;
+  }
+  .logodiv-writing {
+    font-size: 1.3rem;
+  }
+  .loggedin {
+    font-size: 0.7rem;
+  }
+
+  .rightside h2 {
+    font-size: 1rem;
+  }
+
+  .btn {
+    font-size: 0.5rem;
+  }
+  .registerarea p {
+    font-size: 0.7rem;
+  }
+
+  .rightside {
     height: 70%;
     align-self: center;
   }
-  .rightside h2 {
-    font-size: 1.3rem;
-  }
-  .app {
-    grid-template-columns: 1.5fr 2fr;
-  }
+
+  /* after loggedin */
+
   .createnew,
   .delete {
     font-size: 0.7rem;
-    padding: 0.2rem;
+    padding: 0.3rem;
   }
   .filterdiv input,
   .form input {
@@ -441,50 +485,82 @@ body {
     gap: 1rem;
     padding: 0;
   }
+  .list li {
+    font-size: 0.7rem;
+  }
+  .form h3,
+  .filtercontact h3,
+  .personsdiv h3 {
+    font-size: 0.8rem;
+  }
 }
 @media (min-width: 567px) and (max-width: 768px) {
-  .app {
-    grid-template-columns: 1fr 2fr;
+  .form h3,
+  .filtercontact h3,
+  .personsdiv h3 {
+    font-size: 0.8rem;
+  }
+  .list li {
+    font-size: 0.7rem;
   }
   .logodiv {
     background-position: center;
-    height: 50%;
-    align-self: center;
+    height: 70%;
+    padding: 0.5rem;
   }
-  .logodiv2 {
-    font-size: 0.3rem;
+  .logodiv-writing {
+    font-size: 1rem;
+  }
+  .loggedin {
+    font-size: 0.5rem;
+  }
+
+  .rightside h2 {
+    font-size: 1rem;
+  }
+
+  .btn {
+    font-size: 0.5rem;
+  }
+  .registerarea p {
+    font-size: 0.7rem;
+  }
+
+  .app {
+    grid-template-columns: 1.7fr 2fr;
+    padding: 2rem;
   }
 
   .rightside {
     height: 70%;
     align-self: center;
   }
+  .loginform input::placeholder {
+    font-size: 0.6rem;
+  }
 
-  .rightside h2 {
-    font-size: 0.8rem;
+  /* after login */
+  .logodiv2 {
+    font-size: 0.3rem;
   }
-  .loggedin {
-    font-size: 0.7rem;
+  .saveicon {
+    height: 1rem;
   }
-  .registerarea p {
-    font-size: 0.7rem;
+  .createnew {
+    padding: 0.2rem;
   }
-  .btn {
-    font-size: 0.5rem;
-  }
-  .logodiv-writing {
-    font-size: 1rem;
-  }
+
   .logout {
     font-size: 0.7rem;
   }
   .mainpage {
     gap: 1rem;
     padding: 0;
+    width: 90%;
   }
   .filterdiv,
   .form {
-    padding: 2rem;
+    padding: 1.5rem;
   }
   .filterdiv input,
   .form input {
@@ -493,14 +569,41 @@ body {
     font-size: 0.7rem;
   }
 }
+
 @media (max-width: 567px) {
   .app {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 2fr;
+    grid-template-rows: 1.3fr 2fr;
+    padding: 2rem;
   }
+
   .rightside h2 {
     font-size: 1rem;
   }
+  .btn {
+    padding: 0.2rem;
+    font-size: 0.7rem;
+  }
+  .logodiv-writing {
+    font-size: 1.2rem;
+  }
+  .loggedin {
+    font-size: 0.6rem;
+  }
+
+  /* after login */
+  .app2 {
+    padding: 0.5rem;
+  }
+  .form h3,
+  .filtercontact h3,
+  .personsdiv h3 {
+    font-size: 0.8rem;
+  }
+  .saveicon {
+    height: 1rem;
+  }
+
   .logodiv2 .logodiv-writing {
     font-size: 1.2rem;
     left: -6%;
@@ -512,17 +615,11 @@ body {
   .list {
     font-size: 0.8rem;
   }
-  .btn {
-    padding: 0.2rem;
-  }
-  .logodiv-writing {
-    top: -20%;
-  }
 
   .mainpage {
     gap: 1rem;
     padding: 0;
-    flex-direction: column;
+    flex-direction: var(--flex-direction);
     justify-content: center;
     align-items: center;
   }
@@ -530,6 +627,7 @@ body {
   .filterdiv,
   .form {
     width: 80%;
+    padding: 1.5rem;
   }
 
   .filterdiv input,
