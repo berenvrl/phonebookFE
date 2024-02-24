@@ -1,4 +1,3 @@
-import Register from "../services/register";
 import LoginForm from "./LoginForm";
 import RegisterArea from "./RegisterArea";
 

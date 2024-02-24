@@ -7,7 +7,6 @@ const PersonForm = ({
   setNewName,
   newNumber,
   setNewNumber,
-  className,
 }) => {
   return (
     <div className="form" data-testid="person-form">
